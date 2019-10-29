@@ -1,4 +1,291 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[known-as-bmf.github.io]]></title><description><![CDATA[known-as-bmf.github.io]]></description><link>https://known-as-bmf.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 28 Oct 2019 22:47:11 GMT</lastBuildDate><item><title><![CDATA[Functional Programming — Currying (Part 2)]]></title><description><![CDATA[Réécrivons les fonctions mult at add différemment pour rendre ce code expressif et moins verbeux. Nous avons transformé les fonctions pour…]]></description><link>https://known-as-bmf.github.io/functional-programming/currying/part-2</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/currying/part-2</guid><pubDate>Tue, 22 Oct 2019 01:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Réécrivons les fonctions &lt;code&gt;mult&lt;/code&gt; at &lt;code&gt;add&lt;/code&gt; différemment pour rendre ce code expressif et moins verbeux.&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[known-as-bmf.github.io]]></title><description><![CDATA[known-as-bmf.github.io]]></description><link>https://known-as-bmf.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 29 Oct 2019 22:42:50 GMT</lastBuildDate><item><title><![CDATA[Functional Programming — Currying (Part 5)]]></title><description><![CDATA[Remédions à ça ! Tout d’abord, un peu de vocabulaire : l’arité d’une fonction. L’arité d’une fonction est le nombre de paramètres qu’attends…]]></description><link>https://known-as-bmf.github.io/functional-programming/currying/part-5</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/currying/part-5</guid><pubDate>Tue, 22 Oct 2019 04:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Remédions à ça !&lt;/p&gt;
+&lt;p&gt;Tout d’abord, un peu de vocabulaire : l’&lt;strong&gt;&lt;a href=&quot;https://fr.wikipedia.org/wiki/Arit%C3%A9&quot;&gt;arité&lt;/a&gt;&lt;/strong&gt; d’une fonction. L’arité d’une fonction est le nombre de paramètres qu’attends une fonction.&lt;/p&gt;
+&lt;p&gt;En JavaScript, il est possible de trouver l’arité d’une fonction en appelant la propriété &lt;code&gt;length&lt;/code&gt; de cette fonction.&lt;/p&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// (Number, Number) -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = (&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;) &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; + &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;arity&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// arity = 2&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Néanmoins, les paramètres optionnels d’une fonction ne rentrerons pas dans le calcul de l’arité.&lt;/p&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// (Number, Number, Number?) -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = (&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;) &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; + &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; + &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;arity&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// arity = 2&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Et maintenant, le saint Graal du currying :&lt;/p&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;curry&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = (&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;arity&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, ...&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;) &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; {&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;mtk15&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; (&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;arity&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &amp;lt;= &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;) {&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;mtk15&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(...&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  }&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;mtk15&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;curry&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;arity&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, ...&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;};&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;:root {
+  --vscode-highlight-padding-v: 1rem;
+  --vscode-highlight-padding-h: 1.5rem;
+  --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
+  --vscode-highlight-padding-right: var(--vscode-highlight-padding-h);
+  --vscode-highlight-padding-bottom: var(--vscode-highlight-padding-v);
+  --vscode-highlight-padding-left: var(--vscode-highlight-padding-h);
+  --vscode-highlight-border-radius: 8px;
+
+  --vscode-highlight-line-highlighted-background-color: transparent;
+  --vscode-highlight-line-highlighted-border-width: 4px;
+  --vscode-highlight-line-highlighted-border-color: transparent;
+}
+
+.vscode-highlight {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 1rem;
+  padding-top: var(--vscode-highlight-padding-top);
+  padding-bottom: 1rem;
+  padding-bottom: var(--vscode-highlight-padding-bottom);
+  border-radius: 8px;
+  border-radius: var(--vscode-highlight-border-radius);
+  font-feature-settings: normal;
+}
+
+.vscode-highlight-code {
+  display: inline-block;
+  min-width: 100%;
+}
+
+.vscode-highlight-line {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding-left: 1.5rem;
+  padding-left: var(--vscode-highlight-padding-left);
+  padding-right: 1.5rem;
+  padding-right: var(--vscode-highlight-padding-right);
+}
+
+.vscode-highlight-line-highlighted {
+  background-color: var(--vscode-highlight-line-highlighted-background-color);
+  box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
+}
+.default-dark {
+background-color: #1E1E1E;
+color: #D4D4D4;
+}
+
+.default-dark .mtk1 { color: #D4D4D4; }
+.default-dark .mtk2 { color: #1E1E1E; }
+.default-dark .mtk3 { color: #6A9955; }
+.default-dark .mtk4 { color: #569CD6; }
+.default-dark .mtk5 { color: #D16969; }
+.default-dark .mtk6 { color: #D7BA7D; }
+.default-dark .mtk7 { color: #B5CEA8; }
+.default-dark .mtk8 { color: #CE9178; }
+.default-dark .mtk9 { color: #646695; }
+.default-dark .mtk10 { color: #4EC9B0; }
+.default-dark .mtk11 { color: #DCDCAA; }
+.default-dark .mtk12 { color: #9CDCFE; }
+.default-dark .mtk13 { color: #000080; }
+.default-dark .mtk14 { color: #F44747; }
+.default-dark .mtk15 { color: #C586C0; }
+.default-dark .mtk16 { color: #6796E6; }
+.default-dark .mtk17 { color: #808080; }
+.default-dark .mtki { font-style: italic; }
+.default-dark .mtkb { font-weight: bold; }
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Currying (Part 4)]]></title><description><![CDATA[Une implémentation naïve d’un currying plus intelligent pourrait ressembler à : Nous utilisons ici la méthode Function.prototype.bind() pour…]]></description><link>https://known-as-bmf.github.io/functional-programming/currying/part-4</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/currying/part-4</guid><pubDate>Tue, 22 Oct 2019 03:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Une implémentation naïve d’un currying plus intelligent pourrait ressembler à :&lt;/p&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// (Number, Number, Number) -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// (Number, Number) -&amp;gt; Number -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// Number -&amp;gt; Number -&amp;gt; Number -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = (&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;) &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; {&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;mtk15&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; (&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; === &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;undefined&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;) {&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;mtk15&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  }&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;mtk15&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; (&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; === &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;undefined&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;) {&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;mtk15&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  }&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;mtk15&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; (&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; === &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;undefined&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;) {&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;mtk15&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  }&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;mtk15&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk10&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk10&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;), &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;};&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nous utilisons ici la méthode &lt;a href=&quot;https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Function/bind&quot;&gt;&lt;code&gt;Function.prototype.bind()&lt;/code&gt;&lt;/a&gt; pour créer les fonction partielles en fonction des arguments donnés auparavant.&lt;/p&gt;
+&lt;p&gt;Avec cette implémentation, il est maintenant possible d’appeler &lt;code&gt;clamp&lt;/code&gt; de toutes les manières vues précédemment.&lt;/p&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// Number -&amp;gt; Number -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clampedFn1&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// Number -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clampedFn2&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clamped1&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// clamped1 = 89&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clamped2&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// clamped2 = 89&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clamped3&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// clamped3 = 89&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clamped4&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// clamped4 = 89&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Néanmoins la quantité de code nécessaire (et à réécrire pour chaque fonction), laisse a désirer.&lt;/p&gt;
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;:root {
+  --vscode-highlight-padding-v: 1rem;
+  --vscode-highlight-padding-h: 1.5rem;
+  --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
+  --vscode-highlight-padding-right: var(--vscode-highlight-padding-h);
+  --vscode-highlight-padding-bottom: var(--vscode-highlight-padding-v);
+  --vscode-highlight-padding-left: var(--vscode-highlight-padding-h);
+  --vscode-highlight-border-radius: 8px;
+
+  --vscode-highlight-line-highlighted-background-color: transparent;
+  --vscode-highlight-line-highlighted-border-width: 4px;
+  --vscode-highlight-line-highlighted-border-color: transparent;
+}
+
+.vscode-highlight {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 1rem;
+  padding-top: var(--vscode-highlight-padding-top);
+  padding-bottom: 1rem;
+  padding-bottom: var(--vscode-highlight-padding-bottom);
+  border-radius: 8px;
+  border-radius: var(--vscode-highlight-border-radius);
+  font-feature-settings: normal;
+}
+
+.vscode-highlight-code {
+  display: inline-block;
+  min-width: 100%;
+}
+
+.vscode-highlight-line {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding-left: 1.5rem;
+  padding-left: var(--vscode-highlight-padding-left);
+  padding-right: 1.5rem;
+  padding-right: var(--vscode-highlight-padding-right);
+}
+
+.vscode-highlight-line-highlighted {
+  background-color: var(--vscode-highlight-line-highlighted-background-color);
+  box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
+}
+.default-dark {
+background-color: #1E1E1E;
+color: #D4D4D4;
+}
+
+.default-dark .mtk1 { color: #D4D4D4; }
+.default-dark .mtk2 { color: #1E1E1E; }
+.default-dark .mtk3 { color: #6A9955; }
+.default-dark .mtk4 { color: #569CD6; }
+.default-dark .mtk5 { color: #D16969; }
+.default-dark .mtk6 { color: #D7BA7D; }
+.default-dark .mtk7 { color: #B5CEA8; }
+.default-dark .mtk8 { color: #CE9178; }
+.default-dark .mtk9 { color: #646695; }
+.default-dark .mtk10 { color: #4EC9B0; }
+.default-dark .mtk11 { color: #DCDCAA; }
+.default-dark .mtk12 { color: #9CDCFE; }
+.default-dark .mtk13 { color: #000080; }
+.default-dark .mtk14 { color: #F44747; }
+.default-dark .mtk15 { color: #C586C0; }
+.default-dark .mtk16 { color: #6796E6; }
+.default-dark .mtk17 { color: #808080; }
+.default-dark .mtki { font-style: italic; }
+.default-dark .mtkb { font-weight: bold; }
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Currying (Part 3)]]></title><description><![CDATA[Le currying vu dans la partie précédente est très puissant mais a quand même quelques inconvénients. Imaginons une fonction ayant trois…]]></description><link>https://known-as-bmf.github.io/functional-programming/currying/part-3</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/currying/part-3</guid><pubDate>Tue, 22 Oct 2019 02:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Le currying vu dans la partie précédente est très puissant mais a quand même quelques inconvénients. Imaginons une fonction ayant trois paramètres :&lt;/p&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// Number -&amp;gt; Number -&amp;gt; Number -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk10&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk10&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;), &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Utiliser cette fonction sur une collection devient un peu bancal car il faut passer tous les arguments un par un.&lt;/p&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clamped&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = [&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;));&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// clamped = [0, 2, 2, 1, 2]&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;L’utilisation en tant que fonction classique est tout aussi bancal :&lt;/p&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clamped&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// clamped = 89&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Il serait plus lisible de pouvoir partiellement appliquer la fonction avec autant d’arguments que nous souhaitons, et d’appeler la fonction une fois que tous les arguments sont remplis, comme ceci :&lt;/p&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// Number -&amp;gt; Number -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clampedFn1&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// Number -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clampedFn2&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clamped1&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// clamped1 = 89&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clamped2&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// clamped2 = 89&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clamped3&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// clamped3 = 89&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clamped4&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// clamped4 = 89&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nous allons voir comment faire ça dans la partie suivante.&lt;/p&gt;
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;:root {
+  --vscode-highlight-padding-v: 1rem;
+  --vscode-highlight-padding-h: 1.5rem;
+  --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
+  --vscode-highlight-padding-right: var(--vscode-highlight-padding-h);
+  --vscode-highlight-padding-bottom: var(--vscode-highlight-padding-v);
+  --vscode-highlight-padding-left: var(--vscode-highlight-padding-h);
+  --vscode-highlight-border-radius: 8px;
+
+  --vscode-highlight-line-highlighted-background-color: transparent;
+  --vscode-highlight-line-highlighted-border-width: 4px;
+  --vscode-highlight-line-highlighted-border-color: transparent;
+}
+
+.vscode-highlight {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 1rem;
+  padding-top: var(--vscode-highlight-padding-top);
+  padding-bottom: 1rem;
+  padding-bottom: var(--vscode-highlight-padding-bottom);
+  border-radius: 8px;
+  border-radius: var(--vscode-highlight-border-radius);
+  font-feature-settings: normal;
+}
+
+.vscode-highlight-code {
+  display: inline-block;
+  min-width: 100%;
+}
+
+.vscode-highlight-line {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding-left: 1.5rem;
+  padding-left: var(--vscode-highlight-padding-left);
+  padding-right: 1.5rem;
+  padding-right: var(--vscode-highlight-padding-right);
+}
+
+.vscode-highlight-line-highlighted {
+  background-color: var(--vscode-highlight-line-highlighted-background-color);
+  box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
+}
+.default-dark {
+background-color: #1E1E1E;
+color: #D4D4D4;
+}
+
+.default-dark .mtk1 { color: #D4D4D4; }
+.default-dark .mtk2 { color: #1E1E1E; }
+.default-dark .mtk3 { color: #6A9955; }
+.default-dark .mtk4 { color: #569CD6; }
+.default-dark .mtk5 { color: #D16969; }
+.default-dark .mtk6 { color: #D7BA7D; }
+.default-dark .mtk7 { color: #B5CEA8; }
+.default-dark .mtk8 { color: #CE9178; }
+.default-dark .mtk9 { color: #646695; }
+.default-dark .mtk10 { color: #4EC9B0; }
+.default-dark .mtk11 { color: #DCDCAA; }
+.default-dark .mtk12 { color: #9CDCFE; }
+.default-dark .mtk13 { color: #000080; }
+.default-dark .mtk14 { color: #F44747; }
+.default-dark .mtk15 { color: #C586C0; }
+.default-dark .mtk16 { color: #6796E6; }
+.default-dark .mtk17 { color: #808080; }
+.default-dark .mtki { font-style: italic; }
+.default-dark .mtkb { font-weight: bold; }
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Currying (Part 2)]]></title><description><![CDATA[Réécrivons les fonctions mult at add différemment pour rendre ce code expressif et moins verbeux. Nous avons transformé les fonctions pour…]]></description><link>https://known-as-bmf.github.io/functional-programming/currying/part-2</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/currying/part-2</guid><pubDate>Tue, 22 Oct 2019 01:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Réécrivons les fonctions &lt;code&gt;mult&lt;/code&gt; at &lt;code&gt;add&lt;/code&gt; différemment pour rendre ce code expressif et moins verbeux.&lt;/p&gt;
 &lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// Number -&amp;gt; Number -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;mult&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; * &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// Number -&amp;gt; Number -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
