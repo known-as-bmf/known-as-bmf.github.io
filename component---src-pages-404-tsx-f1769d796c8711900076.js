@@ -1,2 +1,2 @@
 (window.webpackJsonp=window.webpackJsonp||[]).push([[3],{cK5w:function(t){t.exports=JSON.parse('{"data":{"site":{"siteMetadata":{"title":"known-as-bmf.github.io"}}}}')},"i6+/":function(t,e,a){"use strict";a.r(e),a.d(e,"NotFoundPage",(function(){return c}));var n=a("cK5w"),o=a("q1tI"),i=a.n(o),s=a("9Dj+"),u=a("H8eV"),c=function(t){var e=n.data;return i.a.createElement(s.a,{location:t.location,title:e.site.siteMetadata.title},i.a.createElement(u.a,{title:"404: Not Found"}),i.a.createElement("h1",null,"Not Found"),i.a.createElement("p",null,"You just hit a route that doesn't exist... the sadness."))};e.default=c}}]);
-//# sourceMappingURL=component---src-pages-404-tsx-00d9f7cfaddd7012f2a5.js.map
+//# sourceMappingURL=component---src-pages-404-tsx-f1769d796c8711900076.js.map

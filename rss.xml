@@ -1,5 +1,292 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[known-as-bmf.github.io]]></title><description><![CDATA[known-as-bmf.github.io]]></description><link>https://known-as-bmf.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 03 Nov 2019 20:55:43 GMT</lastBuildDate><item><title><![CDATA[Functional Programming — Composition (Part 1)]]></title><description><![CDATA[Ajoutons un outil inestimable à notre arsenal : la composition de fonctions. Une tache récurrente lors de n’importe quel développement est d…]]></description><link>https://known-as-bmf.github.io/functional-programming/composition/part-1</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/composition/part-1</guid><pubDate>Tue, 22 Oct 2019 05:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Ajoutons un outil inestimable à notre arsenal : la &lt;strong&gt;composition de fonctions&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;Une tache récurrente lors de n’importe quel développement est d’appliquer plusieurs transformations à une valeur.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Currying (Part 5)]]></title><description><![CDATA[Remédions à ça ! Tout d’abord, un peu de vocabulaire : l’arité d’une fonction. L’arité d’une fonction est le nombre de paramètres qu’attends…]]></description><link>https://known-as-bmf.github.io/functional-programming/currying/part-5</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/currying/part-5</guid><pubDate>Tue, 22 Oct 2019 04:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Remédions à ça !&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[known-as-bmf.github.io]]></title><description><![CDATA[known-as-bmf.github.io]]></description><link>https://known-as-bmf.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 10 Nov 2019 23:42:16 GMT</lastBuildDate><item><title><![CDATA[Functional Programming — Composition (Part 1)]]></title><description><![CDATA[Ajoutons un outil inestimable à notre arsenal : la composition de fonctions. Commençons par un peu de mathématiques. Il existe un operateur…]]></description><link>https://known-as-bmf.github.io/functional-programming/composition/part-1</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/composition/part-1</guid><pubDate>Tue, 22 Oct 2019 07:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Ajoutons un outil inestimable à notre arsenal : la &lt;strong&gt;&lt;a href=&quot;https://fr.wikipedia.org/wiki/Composition_de_fonctions&quot;&gt;composition de fonctions&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Commençons par un peu de mathématiques. Il existe un operateur ”∘” qui permet de composer des fonctions tel que :&lt;/p&gt;
+&lt;p&gt;Pour deux fonctions &lt;code&gt;f : a -&gt; b&lt;/code&gt; et &lt;code&gt;g : b -&gt; c&lt;/code&gt; la composition &lt;code&gt;(g ∘ f)&lt;/code&gt; produit une nouvelle fonction &lt;code&gt;a -&gt; c&lt;/code&gt;. En d’autres termes : &lt;code&gt;(g ∘ f)(x) = g(f(x))&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Une implémentation naïve de cet operateur en JavaScript est :&lt;/p&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// ((b -&amp;gt; c), (a -&amp;gt; b)) -&amp;gt; a -&amp;gt; c&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;compose&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = (&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;) &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;));&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Et voici comment l’utiliser :&lt;/p&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;transformation&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;compose&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; * &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;),&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &amp;lt; &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;transformation&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;13&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;21&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;34&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;55&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;]);&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Une tache récurrente lors de n’importe quel développement est d’appliquer plusieurs transformations à une valeur.&lt;/p&gt;
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;
+  :root {
+  --vscode-highlight-padding-v: 1rem;
+  --vscode-highlight-padding-h: 1.5rem;
+  --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
+  --vscode-highlight-padding-right: var(--vscode-highlight-padding-h);
+  --vscode-highlight-padding-bottom: var(--vscode-highlight-padding-v);
+  --vscode-highlight-padding-left: var(--vscode-highlight-padding-h);
+  --vscode-highlight-border-radius: 8px;
+
+  --vscode-highlight-line-highlighted-background-color: transparent;
+  --vscode-highlight-line-highlighted-border-width: 4px;
+  --vscode-highlight-line-highlighted-border-color: transparent;
+}
+
+.vscode-highlight {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 1rem;
+  padding-top: var(--vscode-highlight-padding-top);
+  padding-bottom: 1rem;
+  padding-bottom: var(--vscode-highlight-padding-bottom);
+  border-radius: 8px;
+  border-radius: var(--vscode-highlight-border-radius);
+  font-feature-settings: normal;
+}
+
+.vscode-highlight-code {
+  display: inline-block;
+  min-width: 100%;
+}
+
+.vscode-highlight-line {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding-left: 1.5rem;
+  padding-left: var(--vscode-highlight-padding-left);
+  padding-right: 1.5rem;
+  padding-right: var(--vscode-highlight-padding-right);
+}
+
+.vscode-highlight-line-highlighted {
+  background-color: var(--vscode-highlight-line-highlighted-background-color);
+  box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
+}
+
+  .default-dark {
+background-color: #1E1E1E;
+color: #D4D4D4;
+}
+
+.default-dark .mtk1 { color: #D4D4D4; }
+.default-dark .mtk2 { color: #1E1E1E; }
+.default-dark .mtk3 { color: #6A9955; }
+.default-dark .mtk4 { color: #569CD6; }
+.default-dark .mtk5 { color: #D16969; }
+.default-dark .mtk6 { color: #D7BA7D; }
+.default-dark .mtk7 { color: #B5CEA8; }
+.default-dark .mtk8 { color: #CE9178; }
+.default-dark .mtk9 { color: #646695; }
+.default-dark .mtk10 { color: #4EC9B0; }
+.default-dark .mtk11 { color: #DCDCAA; }
+.default-dark .mtk12 { color: #9CDCFE; }
+.default-dark .mtk13 { color: #000080; }
+.default-dark .mtk14 { color: #F44747; }
+.default-dark .mtk15 { color: #C586C0; }
+.default-dark .mtk16 { color: #6796E6; }
+.default-dark .mtk17 { color: #808080; }
+.default-dark .mtki { font-style: italic; }
+.default-dark .mtkb { font-weight: bold; }
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }
+&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Common functions (Part 1)]]></title><description><![CDATA[Une des choses très intimidante quand on débute dans la programmation fonctionnelle, c’est le vocabulaire. Beaucoup de termes sembles…]]></description><link>https://known-as-bmf.github.io/functional-programming/common-functions/part-1</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/common-functions/part-1</guid><pubDate>Tue, 22 Oct 2019 06:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Une des choses très intimidante quand on débute dans la programmation fonctionnelle, c’est le vocabulaire. Beaucoup de termes sembles étrangers et complexes. Essayons de les démystifier un peu.&lt;/p&gt;
+&lt;p&gt;Voici une liste de fonctions classiques et une implémentation naïve. Certaines on déjà une implémentation en JavaScript standard, mais il est très utile d’en créer une version fonctionnelle pour la suite.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;identity&lt;/code&gt; une fonction qui prends un argument et le retourne tel quel. parfois appelé &lt;code&gt;id&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// a -&amp;gt; a&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;identity&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;always&lt;/code&gt; une fonction qui prends un argument et retourne une fonction qui retournera toujours cette valeur. Parfois appelé &lt;code&gt;constant&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// a -&amp;gt; () -&amp;gt; a&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;always&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; () &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;map&lt;/code&gt; applique une fonction de transformation a chaque élément d’une collection.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// (a -&amp;gt; b) -&amp;gt; a[] -&amp;gt; b[]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;mapFn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;mapFn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;filter&lt;/code&gt; filtre une collection avec un prédicat&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// (a -&amp;gt; Boolean) -&amp;gt; a[] -&amp;gt; a[]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;filterFn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;filterFn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;find&lt;/code&gt; trouve la première valeur dans collection qui satisfait un prédicat. Parfois appelé &lt;code&gt;first&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// (a -&amp;gt; Boolean) -&amp;gt; a[] -&amp;gt; a&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;findFn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;findFn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;any&lt;/code&gt; vérifie si au moins un des élément d’une collection satisfais un prédicat. Parfois appelé &lt;code&gt;some&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// (a -&amp;gt; Boolean) -&amp;gt; a[] -&amp;gt; Boolean&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;anyFn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;some&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;anyFn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;all&lt;/code&gt; vérifie si tous les éléments d’une collection satisfont un prédicat. Parfois appelé &lt;code&gt;every&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// (a -&amp;gt; Boolean) -&amp;gt; a[] -&amp;gt; Boolean&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;allFn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;every&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;allFn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;flatMap&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;
+  :root {
+  --vscode-highlight-padding-v: 1rem;
+  --vscode-highlight-padding-h: 1.5rem;
+  --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
+  --vscode-highlight-padding-right: var(--vscode-highlight-padding-h);
+  --vscode-highlight-padding-bottom: var(--vscode-highlight-padding-v);
+  --vscode-highlight-padding-left: var(--vscode-highlight-padding-h);
+  --vscode-highlight-border-radius: 8px;
+
+  --vscode-highlight-line-highlighted-background-color: transparent;
+  --vscode-highlight-line-highlighted-border-width: 4px;
+  --vscode-highlight-line-highlighted-border-color: transparent;
+}
+
+.vscode-highlight {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 1rem;
+  padding-top: var(--vscode-highlight-padding-top);
+  padding-bottom: 1rem;
+  padding-bottom: var(--vscode-highlight-padding-bottom);
+  border-radius: 8px;
+  border-radius: var(--vscode-highlight-border-radius);
+  font-feature-settings: normal;
+}
+
+.vscode-highlight-code {
+  display: inline-block;
+  min-width: 100%;
+}
+
+.vscode-highlight-line {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding-left: 1.5rem;
+  padding-left: var(--vscode-highlight-padding-left);
+  padding-right: 1.5rem;
+  padding-right: var(--vscode-highlight-padding-right);
+}
+
+.vscode-highlight-line-highlighted {
+  background-color: var(--vscode-highlight-line-highlighted-background-color);
+  box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
+}
+
+  .default-dark {
+background-color: #1E1E1E;
+color: #D4D4D4;
+}
+
+.default-dark .mtk1 { color: #D4D4D4; }
+.default-dark .mtk2 { color: #1E1E1E; }
+.default-dark .mtk3 { color: #6A9955; }
+.default-dark .mtk4 { color: #569CD6; }
+.default-dark .mtk5 { color: #D16969; }
+.default-dark .mtk6 { color: #D7BA7D; }
+.default-dark .mtk7 { color: #B5CEA8; }
+.default-dark .mtk8 { color: #CE9178; }
+.default-dark .mtk9 { color: #646695; }
+.default-dark .mtk10 { color: #4EC9B0; }
+.default-dark .mtk11 { color: #DCDCAA; }
+.default-dark .mtk12 { color: #9CDCFE; }
+.default-dark .mtk13 { color: #000080; }
+.default-dark .mtk14 { color: #F44747; }
+.default-dark .mtk15 { color: #C586C0; }
+.default-dark .mtk16 { color: #6796E6; }
+.default-dark .mtk17 { color: #808080; }
+.default-dark .mtki { font-style: italic; }
+.default-dark .mtkb { font-weight: bold; }
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }
+&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Currying (Part 6)]]></title><description><![CDATA[Avant d’aller plus loin, prenons un peu de temps pour parler de l’ordre des paramètres d’une fonction. Vous l’avez peut-être déjà remarqué…]]></description><link>https://known-as-bmf.github.io/functional-programming/currying/part-6</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/currying/part-6</guid><pubDate>Tue, 22 Oct 2019 05:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Avant d’aller plus loin, prenons un peu de temps pour parler de l’&lt;strong&gt;ordre des paramètres&lt;/strong&gt; d’une fonction. Vous l’avez peut-être déjà remarqué par vous même, l’ordre des paramètres d’une fonction curriée est &lt;strong&gt;très&lt;/strong&gt; important.&lt;/p&gt;
+&lt;p&gt;Prenons par exemple ces deux fonctions qui font exactement la même chose :&lt;/p&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// (a[], a -&amp;gt; b) -&amp;gt; b[]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;map1&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = (&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;mapFn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;) &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;mapFn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// (a -&amp;gt; b, a[]) -&amp;gt; b[]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;map2&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = (&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;mapFn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;) &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;mapFn&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;La seule différence est l’ordre de ses paramètres. Maintenant, curryfions les :&lt;/p&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// a[] -&amp;gt; (a -&amp;gt; b) -&amp;gt; b[]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;curriedMap1&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;curry&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;map1&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// (a -&amp;gt; b) -&amp;gt; a[] -&amp;gt; b[]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;curriedMap2&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;curry&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;map2&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Vous pouvez voir ici que le premier paramètre “pré-remplissable” change en fonction de la signature de base, ce qui impacte énormément l’utilité et l’utilisation de la version curriée.&lt;/p&gt;
+&lt;p&gt;Ici, la première version a un utilité très limitée, car elle permet d’appliquer plusieurs transformations sur la même liste alors que la seconde version permet d’appliquer une transformation donnée sur plusieurs listes.&lt;/p&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// Number[] -&amp;gt; Number[]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;divideByTwo&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;curriedMap2&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; / &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;La règle générale est de mettre la valeur a transformer / manipuler en dernier dans la liste de paramètres.&lt;/p&gt;
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;
+  :root {
+  --vscode-highlight-padding-v: 1rem;
+  --vscode-highlight-padding-h: 1.5rem;
+  --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
+  --vscode-highlight-padding-right: var(--vscode-highlight-padding-h);
+  --vscode-highlight-padding-bottom: var(--vscode-highlight-padding-v);
+  --vscode-highlight-padding-left: var(--vscode-highlight-padding-h);
+  --vscode-highlight-border-radius: 8px;
+
+  --vscode-highlight-line-highlighted-background-color: transparent;
+  --vscode-highlight-line-highlighted-border-width: 4px;
+  --vscode-highlight-line-highlighted-border-color: transparent;
+}
+
+.vscode-highlight {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 1rem;
+  padding-top: var(--vscode-highlight-padding-top);
+  padding-bottom: 1rem;
+  padding-bottom: var(--vscode-highlight-padding-bottom);
+  border-radius: 8px;
+  border-radius: var(--vscode-highlight-border-radius);
+  font-feature-settings: normal;
+}
+
+.vscode-highlight-code {
+  display: inline-block;
+  min-width: 100%;
+}
+
+.vscode-highlight-line {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding-left: 1.5rem;
+  padding-left: var(--vscode-highlight-padding-left);
+  padding-right: 1.5rem;
+  padding-right: var(--vscode-highlight-padding-right);
+}
+
+.vscode-highlight-line-highlighted {
+  background-color: var(--vscode-highlight-line-highlighted-background-color);
+  box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
+}
+
+  .default-dark {
+background-color: #1E1E1E;
+color: #D4D4D4;
+}
+
+.default-dark .mtk1 { color: #D4D4D4; }
+.default-dark .mtk2 { color: #1E1E1E; }
+.default-dark .mtk3 { color: #6A9955; }
+.default-dark .mtk4 { color: #569CD6; }
+.default-dark .mtk5 { color: #D16969; }
+.default-dark .mtk6 { color: #D7BA7D; }
+.default-dark .mtk7 { color: #B5CEA8; }
+.default-dark .mtk8 { color: #CE9178; }
+.default-dark .mtk9 { color: #646695; }
+.default-dark .mtk10 { color: #4EC9B0; }
+.default-dark .mtk11 { color: #DCDCAA; }
+.default-dark .mtk12 { color: #9CDCFE; }
+.default-dark .mtk13 { color: #000080; }
+.default-dark .mtk14 { color: #F44747; }
+.default-dark .mtk15 { color: #C586C0; }
+.default-dark .mtk16 { color: #6796E6; }
+.default-dark .mtk17 { color: #808080; }
+.default-dark .mtki { font-style: italic; }
+.default-dark .mtkb { font-weight: bold; }
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }
+&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Currying (Part 5)]]></title><description><![CDATA[Remédions à ça ! Tout d’abord, un peu de vocabulaire : l’arité d’une fonction. L’arité d’une fonction est le nombre de paramètres qu’attends…]]></description><link>https://known-as-bmf.github.io/functional-programming/currying/part-5</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/currying/part-5</guid><pubDate>Tue, 22 Oct 2019 04:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Remédions à ça !&lt;/p&gt;
 &lt;p&gt;Tout d’abord, un peu de vocabulaire : l’&lt;strong&gt;&lt;a href=&quot;https://fr.wikipedia.org/wiki/Arit%C3%A9&quot;&gt;arité&lt;/a&gt;&lt;/strong&gt; d’une fonction. L’arité d’une fonction est le nombre de paramètres qu’attends une fonction.&lt;/p&gt;
 &lt;p&gt;En JavaScript, il est possible de trouver l’arité d’une fonction en appelant la propriété &lt;code&gt;length&lt;/code&gt; de cette fonction.&lt;/p&gt;
 &lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// (Number, Number) -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
@@ -39,7 +326,8 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;style class=&quot;vscode-highlight-styles&quot;&gt;:root {
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;
+  :root {
   --vscode-highlight-padding-v: 1rem;
   --vscode-highlight-padding-h: 1.5rem;
   --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
@@ -84,7 +372,8 @@
   background-color: var(--vscode-highlight-line-highlighted-background-color);
   box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
 }
-.default-dark {
+
+  .default-dark {
 background-color: #1E1E1E;
 color: #D4D4D4;
 }
@@ -108,7 +397,8 @@ color: #D4D4D4;
 .default-dark .mtk17 { color: #808080; }
 .default-dark .mtki { font-style: italic; }
 .default-dark .mtkb { font-weight: bold; }
-.default-dark .mtku { text-decoration: underline; text-underline-position: under; }&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Currying (Part 4)]]></title><description><![CDATA[Une implémentation naïve d’un currying plus intelligent pourrait ressembler à : Nous utilisons ici la méthode Function.prototype.bind() pour…]]></description><link>https://known-as-bmf.github.io/functional-programming/currying/part-4</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/currying/part-4</guid><pubDate>Tue, 22 Oct 2019 03:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Une implémentation naïve d’un currying plus intelligent pourrait ressembler à :&lt;/p&gt;
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }
+&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Currying (Part 4)]]></title><description><![CDATA[Une implémentation naïve d’un currying plus intelligent pourrait ressembler à : Nous utilisons ici la méthode Function.prototype.bind() pour…]]></description><link>https://known-as-bmf.github.io/functional-programming/currying/part-4</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/currying/part-4</guid><pubDate>Tue, 22 Oct 2019 03:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Une implémentation naïve d’un currying plus intelligent pourrait ressembler à :&lt;/p&gt;
 &lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// (Number, Number, Number) -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// (Number, Number) -&amp;gt; Number -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// Number -&amp;gt; Number -&amp;gt; Number -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
@@ -143,7 +433,8 @@ color: #D4D4D4;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clamped4&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// clamped4 = 89&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Néanmoins la quantité de code nécessaire (et à réécrire pour chaque fonction), laisse a désirer.&lt;/p&gt;
-&lt;style class=&quot;vscode-highlight-styles&quot;&gt;:root {
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;
+  :root {
   --vscode-highlight-padding-v: 1rem;
   --vscode-highlight-padding-h: 1.5rem;
   --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
@@ -188,7 +479,8 @@ color: #D4D4D4;
   background-color: var(--vscode-highlight-line-highlighted-background-color);
   box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
 }
-.default-dark {
+
+  .default-dark {
 background-color: #1E1E1E;
 color: #D4D4D4;
 }
@@ -212,7 +504,8 @@ color: #D4D4D4;
 .default-dark .mtk17 { color: #808080; }
 .default-dark .mtki { font-style: italic; }
 .default-dark .mtkb { font-weight: bold; }
-.default-dark .mtku { text-decoration: underline; text-underline-position: under; }&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Currying (Part 3)]]></title><description><![CDATA[Le currying vu dans la partie précédente est très puissant mais a quand même quelques inconvénients. Imaginons une fonction ayant trois…]]></description><link>https://known-as-bmf.github.io/functional-programming/currying/part-3</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/currying/part-3</guid><pubDate>Tue, 22 Oct 2019 02:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Le currying vu dans la partie précédente est très puissant mais a quand même quelques inconvénients. Imaginons une fonction ayant trois paramètres :&lt;/p&gt;
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }
+&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Currying (Part 3)]]></title><description><![CDATA[Le currying vu dans la partie précédente est très puissant mais a quand même quelques inconvénients. Imaginons une fonction ayant trois…]]></description><link>https://known-as-bmf.github.io/functional-programming/currying/part-3</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/currying/part-3</guid><pubDate>Tue, 22 Oct 2019 02:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Le currying vu dans la partie précédente est très puissant mais a quand même quelques inconvénients. Imaginons une fonction ayant trois paramètres :&lt;/p&gt;
 &lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// Number -&amp;gt; Number -&amp;gt; Number -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk10&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk10&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;), &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Utiliser cette fonction sur une collection devient un peu bancal car il faut passer tous les arguments un par un.&lt;/p&gt;
@@ -236,7 +529,8 @@ color: #D4D4D4;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;clamped4&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;clamp&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// clamped4 = 89&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Nous allons voir comment faire ça dans la partie suivante.&lt;/p&gt;
-&lt;style class=&quot;vscode-highlight-styles&quot;&gt;:root {
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;
+  :root {
   --vscode-highlight-padding-v: 1rem;
   --vscode-highlight-padding-h: 1.5rem;
   --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
@@ -281,7 +575,8 @@ color: #D4D4D4;
   background-color: var(--vscode-highlight-line-highlighted-background-color);
   box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
 }
-.default-dark {
+
+  .default-dark {
 background-color: #1E1E1E;
 color: #D4D4D4;
 }
@@ -305,7 +600,8 @@ color: #D4D4D4;
 .default-dark .mtk17 { color: #808080; }
 .default-dark .mtki { font-style: italic; }
 .default-dark .mtkb { font-weight: bold; }
-.default-dark .mtku { text-decoration: underline; text-underline-position: under; }&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Currying (Part 2)]]></title><description><![CDATA[Réécrivons les fonctions mult at add différemment pour rendre ce code expressif et moins verbeux. Nous avons transformé les fonctions pour…]]></description><link>https://known-as-bmf.github.io/functional-programming/currying/part-2</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/currying/part-2</guid><pubDate>Tue, 22 Oct 2019 01:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Réécrivons les fonctions &lt;code&gt;mult&lt;/code&gt; at &lt;code&gt;add&lt;/code&gt; différemment pour rendre ce code expressif et moins verbeux.&lt;/p&gt;
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }
+&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Currying (Part 2)]]></title><description><![CDATA[Réécrivons les fonctions mult at add différemment pour rendre ce code expressif et moins verbeux. Nous avons transformé les fonctions pour…]]></description><link>https://known-as-bmf.github.io/functional-programming/currying/part-2</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/currying/part-2</guid><pubDate>Tue, 22 Oct 2019 01:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Réécrivons les fonctions &lt;code&gt;mult&lt;/code&gt; at &lt;code&gt;add&lt;/code&gt; différemment pour rendre ce code expressif et moins verbeux.&lt;/p&gt;
 &lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// Number -&amp;gt; Number -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;mult&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; * &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// Number -&amp;gt; Number -&amp;gt; Number&lt;/span&gt;&lt;/span&gt;
@@ -330,7 +626,8 @@ color: #D4D4D4;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  .&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;mult&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;))&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  .&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;));&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Expressif et concis 😎.&lt;/p&gt;
-&lt;style class=&quot;vscode-highlight-styles&quot;&gt;:root {
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;
+  :root {
   --vscode-highlight-padding-v: 1rem;
   --vscode-highlight-padding-h: 1.5rem;
   --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
@@ -375,7 +672,8 @@ color: #D4D4D4;
   background-color: var(--vscode-highlight-line-highlighted-background-color);
   box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
 }
-.default-dark {
+
+  .default-dark {
 background-color: #1E1E1E;
 color: #D4D4D4;
 }
@@ -399,7 +697,8 @@ color: #D4D4D4;
 .default-dark .mtk17 { color: #808080; }
 .default-dark .mtki { font-style: italic; }
 .default-dark .mtkb { font-weight: bold; }
-.default-dark .mtku { text-decoration: underline; text-underline-position: under; }&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Currying (Part 1)]]></title><description><![CDATA[Deux autres concepts très importants dans le paradigme fonctionnel sont le currying et l’application partielle. Voici un problème très…]]></description><link>https://known-as-bmf.github.io/functional-programming/currying/part-1</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/currying/part-1</guid><pubDate>Tue, 22 Oct 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Deux autres concepts très importants dans le paradigme fonctionnel sont le &lt;strong&gt;currying&lt;/strong&gt; et l’&lt;strong&gt;application partielle&lt;/strong&gt;.&lt;/p&gt;
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }
+&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Currying (Part 1)]]></title><description><![CDATA[Deux autres concepts très importants dans le paradigme fonctionnel sont le currying et l’application partielle. Voici un problème très…]]></description><link>https://known-as-bmf.github.io/functional-programming/currying/part-1</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/currying/part-1</guid><pubDate>Tue, 22 Oct 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Deux autres concepts très importants dans le paradigme fonctionnel sont le &lt;strong&gt;currying&lt;/strong&gt; et l’&lt;strong&gt;application partielle&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;Voici un problème très simple qui illustrera ces concepts : nous avons une liste d’entiers.&lt;/p&gt;
 &lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;arr&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = [&lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;];&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;dont nous souhaitons multiplier tous les éléments par &lt;code&gt;10&lt;/code&gt;. Créons une fonction pour simplifier le travail.&lt;/p&gt;
@@ -430,7 +729,8 @@ color: #D4D4D4;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  .&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;twoTimes&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  .&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;plusTen&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Essayons de garder un code expressif et de réduire la quantité de code à écrire.&lt;/p&gt;
-&lt;style class=&quot;vscode-highlight-styles&quot;&gt;:root {
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;
+  :root {
   --vscode-highlight-padding-v: 1rem;
   --vscode-highlight-padding-h: 1.5rem;
   --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
@@ -475,7 +775,8 @@ color: #D4D4D4;
   background-color: var(--vscode-highlight-line-highlighted-background-color);
   box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
 }
-.default-dark {
+
+  .default-dark {
 background-color: #1E1E1E;
 color: #D4D4D4;
 }
@@ -499,7 +800,8 @@ color: #D4D4D4;
 .default-dark .mtk17 { color: #808080; }
 .default-dark .mtki { font-style: italic; }
 .default-dark .mtkb { font-weight: bold; }
-.default-dark .mtku { text-decoration: underline; text-underline-position: under; }&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — High-Order Functions (Part 5)]]></title><description><![CDATA[Vous l’aviez peut-être remarqué, mais cette fonction filterUsers peut en fait être utilisée pour n’importe quel type de collection, puisque…]]></description><link>https://known-as-bmf.github.io/functional-programming/high-order-functions/part-5</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/high-order-functions/part-5</guid><pubDate>Mon, 21 Oct 2019 23:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Vous l’aviez peut-être remarqué, mais cette fonction &lt;code&gt;filterUsers&lt;/code&gt; peut en fait être utilisée pour n’importe quel type de collection, puisque c’est nous qui contrôlons le tableau en entrée et le prédicat !&lt;/p&gt;
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }
+&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — High-Order Functions (Part 5)]]></title><description><![CDATA[Vous l’aviez peut-être remarqué, mais cette fonction filterUsers peut en fait être utilisée pour n’importe quel type de collection, puisque…]]></description><link>https://known-as-bmf.github.io/functional-programming/high-order-functions/part-5</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/high-order-functions/part-5</guid><pubDate>Mon, 21 Oct 2019 23:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Vous l’aviez peut-être remarqué, mais cette fonction &lt;code&gt;filterUsers&lt;/code&gt; peut en fait être utilisée pour n’importe quel type de collection, puisque c’est nous qui contrôlons le tableau en entrée et le prédicat !&lt;/p&gt;
 &lt;p&gt;En voici une version générique :&lt;/p&gt;
 &lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// (a[], (a -&amp;gt; Boolean)) -&amp;gt; a[]&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;pred&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;) {&lt;/span&gt;&lt;/span&gt;
@@ -539,7 +841,8 @@ color: #D4D4D4;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  }&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;mtk15&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;style class=&quot;vscode-highlight-styles&quot;&gt;:root {
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;
+  :root {
   --vscode-highlight-padding-v: 1rem;
   --vscode-highlight-padding-h: 1.5rem;
   --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
@@ -584,7 +887,8 @@ color: #D4D4D4;
   background-color: var(--vscode-highlight-line-highlighted-background-color);
   box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
 }
-.default-dark {
+
+  .default-dark {
 background-color: #1E1E1E;
 color: #D4D4D4;
 }
@@ -608,7 +912,8 @@ color: #D4D4D4;
 .default-dark .mtk17 { color: #808080; }
 .default-dark .mtki { font-style: italic; }
 .default-dark .mtkb { font-weight: bold; }
-.default-dark .mtku { text-decoration: underline; text-underline-position: under; }&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — High-Order Functions (Part 4)]]></title><description><![CDATA[Utilisons la magie des fonctions d’ordre supérieur ! Essayons d’extraire la condition de la partie précédente dans une fonction : On appelle…]]></description><link>https://known-as-bmf.github.io/functional-programming/high-order-functions/part-4</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/high-order-functions/part-4</guid><pubDate>Mon, 21 Oct 2019 22:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Utilisons la magie des fonctions d’ordre supérieur !&lt;/p&gt;
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }
+&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — High-Order Functions (Part 4)]]></title><description><![CDATA[Utilisons la magie des fonctions d’ordre supérieur ! Essayons d’extraire la condition de la partie précédente dans une fonction : On appelle…]]></description><link>https://known-as-bmf.github.io/functional-programming/high-order-functions/part-4</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/high-order-functions/part-4</guid><pubDate>Mon, 21 Oct 2019 22:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Utilisons la magie des fonctions d’ordre supérieur !&lt;/p&gt;
 &lt;p&gt;Essayons d’extraire la condition de la partie précédente dans une fonction :&lt;/p&gt;
 &lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// user -&amp;gt; Boolean&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;olderThan18AndSubscribed&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;/span&gt;
@@ -630,7 +935,8 @@ color: #D4D4D4;
 &lt;p&gt;Il est aussi possible de filtrer “à la volée” en utilisant une fonction anonyme :&lt;/p&gt;
 &lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;filterUsers&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;age&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &amp;gt; &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;55&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Pas mal hein ?&lt;/p&gt;
-&lt;style class=&quot;vscode-highlight-styles&quot;&gt;:root {
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;
+  :root {
   --vscode-highlight-padding-v: 1rem;
   --vscode-highlight-padding-h: 1.5rem;
   --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
@@ -675,7 +981,8 @@ color: #D4D4D4;
   background-color: var(--vscode-highlight-line-highlighted-background-color);
   box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
 }
-.default-dark {
+
+  .default-dark {
 background-color: #1E1E1E;
 color: #D4D4D4;
 }
@@ -699,7 +1006,8 @@ color: #D4D4D4;
 .default-dark .mtk17 { color: #808080; }
 .default-dark .mtki { font-style: italic; }
 .default-dark .mtkb { font-weight: bold; }
-.default-dark .mtku { text-decoration: underline; text-underline-position: under; }&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — High-Order Functions (Part 3)]]></title><description><![CDATA[Vous l’attendiez, la demande d’évolution est arrivée ! Le nouveau besoin est de pouvoir aussi filtrer la liste d’utilisateurs pour trouver…]]></description><link>https://known-as-bmf.github.io/functional-programming/high-order-functions/part-3</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/high-order-functions/part-3</guid><pubDate>Mon, 21 Oct 2019 21:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Vous l’attendiez, la demande d’évolution est arrivée !&lt;/p&gt;
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }
+&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — High-Order Functions (Part 3)]]></title><description><![CDATA[Vous l’attendiez, la demande d’évolution est arrivée ! Le nouveau besoin est de pouvoir aussi filtrer la liste d’utilisateurs pour trouver…]]></description><link>https://known-as-bmf.github.io/functional-programming/high-order-functions/part-3</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/high-order-functions/part-3</guid><pubDate>Mon, 21 Oct 2019 21:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Vous l’attendiez, la demande d’évolution est arrivée !&lt;/p&gt;
 &lt;p&gt;Le nouveau besoin est de pouvoir aussi filtrer la liste d’utilisateurs pour trouver ceux dont l’âge est supérieur ou égal à 30 ans.&lt;/p&gt;
 &lt;p&gt;Faisons donc évoluer notre fonction de filtrage :&lt;/p&gt;
 &lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// (user[], Number) -&amp;gt; user[]&lt;/span&gt;&lt;/span&gt;
@@ -736,7 +1044,8 @@ color: #D4D4D4;
 &lt;li&gt;Le code est moyennement lisible&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Pour résoudre les deux premiers points, il faudrait trouver un moyen de passer la condition &lt;code&gt;user.age &gt;= 18 &amp;#x26;&amp;#x26; user.subscribed === true&lt;/code&gt; directement à la fonction de filtre.&lt;/p&gt;
-&lt;style class=&quot;vscode-highlight-styles&quot;&gt;:root {
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;
+  :root {
   --vscode-highlight-padding-v: 1rem;
   --vscode-highlight-padding-h: 1.5rem;
   --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
@@ -781,7 +1090,8 @@ color: #D4D4D4;
   background-color: var(--vscode-highlight-line-highlighted-background-color);
   box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
 }
-.default-dark {
+
+  .default-dark {
 background-color: #1E1E1E;
 color: #D4D4D4;
 }
@@ -805,7 +1115,8 @@ color: #D4D4D4;
 .default-dark .mtk17 { color: #808080; }
 .default-dark .mtki { font-style: italic; }
 .default-dark .mtkb { font-weight: bold; }
-.default-dark .mtku { text-decoration: underline; text-underline-position: under; }&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — High-Order Functions (Part 2)]]></title><description><![CDATA[Pour illustrer l’intérêt des fonctions d’ordre supérieur, essayons de résoudre un problème classique de manipulation de collection. Prenons…]]></description><link>https://known-as-bmf.github.io/functional-programming/high-order-functions/part-2</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/high-order-functions/part-2</guid><pubDate>Mon, 21 Oct 2019 20:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Pour illustrer l’intérêt des fonctions d’ordre supérieur, essayons de résoudre un problème classique de manipulation de collection.&lt;/p&gt;
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }
+&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — High-Order Functions (Part 2)]]></title><description><![CDATA[Pour illustrer l’intérêt des fonctions d’ordre supérieur, essayons de résoudre un problème classique de manipulation de collection. Prenons…]]></description><link>https://known-as-bmf.github.io/functional-programming/high-order-functions/part-2</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/high-order-functions/part-2</guid><pubDate>Mon, 21 Oct 2019 20:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Pour illustrer l’intérêt des fonctions d’ordre supérieur, essayons de résoudre un problème classique de manipulation de collection.&lt;/p&gt;
 &lt;p&gt;Prenons la collection ci-dessous :&lt;/p&gt;
 &lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = [&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  { &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;name:&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk8&quot;&gt;&amp;#39;Foo&amp;#39;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;age:&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;25&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;subscribed:&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; },&lt;/span&gt;&lt;/span&gt;
@@ -840,7 +1151,8 @@ color: #D4D4D4;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;olderThan18&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;);&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// result contient la liste des utilisateurs filtrés&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Parfait ! Le besoin est rempli, jusqu’à la prochaine demande d’évolution…&lt;/p&gt;
-&lt;style class=&quot;vscode-highlight-styles&quot;&gt;:root {
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;
+  :root {
   --vscode-highlight-padding-v: 1rem;
   --vscode-highlight-padding-h: 1.5rem;
   --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
@@ -885,7 +1197,8 @@ color: #D4D4D4;
   background-color: var(--vscode-highlight-line-highlighted-background-color);
   box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
 }
-.default-dark {
+
+  .default-dark {
 background-color: #1E1E1E;
 color: #D4D4D4;
 }
@@ -909,7 +1222,8 @@ color: #D4D4D4;
 .default-dark .mtk17 { color: #808080; }
 .default-dark .mtki { font-style: italic; }
 .default-dark .mtkb { font-weight: bold; }
-.default-dark .mtku { text-decoration: underline; text-underline-position: under; }&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — High-Order Functions (Part 1)]]></title><description><![CDATA[Dans le paradigme fonctionnel, les fonctions sont des objets de première classe. Cela signifie qu’elles peuvent être : Construites à la…]]></description><link>https://known-as-bmf.github.io/functional-programming/high-order-functions/part-1</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/high-order-functions/part-1</guid><pubDate>Mon, 21 Oct 2019 19:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Dans le paradigme fonctionnel, les fonctions sont des &lt;strong&gt;&lt;a href=&quot;https://fr.wikipedia.org/wiki/Objet_de_premi%C3%A8re_classe&quot;&gt;objets de première classe&lt;/a&gt;&lt;/strong&gt;. Cela signifie qu’elles peuvent être :&lt;/p&gt;
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }
+&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — High-Order Functions (Part 1)]]></title><description><![CDATA[Dans le paradigme fonctionnel, les fonctions sont des objets de première classe. Cela signifie qu’elles peuvent être : Construites à la…]]></description><link>https://known-as-bmf.github.io/functional-programming/high-order-functions/part-1</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/high-order-functions/part-1</guid><pubDate>Mon, 21 Oct 2019 19:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Dans le paradigme fonctionnel, les fonctions sont des &lt;strong&gt;&lt;a href=&quot;https://fr.wikipedia.org/wiki/Objet_de_premi%C3%A8re_classe&quot;&gt;objets de première classe&lt;/a&gt;&lt;/strong&gt;. Cela signifie qu’elles peuvent être :&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Construites à la volée (aussi appelé &lt;strong&gt;&lt;a href=&quot;https://fr.wikipedia.org/wiki/Fonction_anonyme&quot;&gt;fonction anonyme ou fonction lambda&lt;/a&gt;&lt;/strong&gt;)&lt;/li&gt;
 &lt;li&gt;Affectées a des variables&lt;/li&gt;
@@ -933,7 +1247,8 @@ color: #D4D4D4;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// &amp;gt; hello bmf!&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// &amp;gt; bmf hello!&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;style class=&quot;vscode-highlight-styles&quot;&gt;:root {
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;
+  :root {
   --vscode-highlight-padding-v: 1rem;
   --vscode-highlight-padding-h: 1.5rem;
   --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
@@ -978,7 +1293,8 @@ color: #D4D4D4;
   background-color: var(--vscode-highlight-line-highlighted-background-color);
   box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
 }
-.default-dark {
+
+  .default-dark {
 background-color: #1E1E1E;
 color: #D4D4D4;
 }
@@ -1002,7 +1318,8 @@ color: #D4D4D4;
 .default-dark .mtk17 { color: #808080; }
 .default-dark .mtki { font-style: italic; }
 .default-dark .mtkb { font-weight: bold; }
-.default-dark .mtku { text-decoration: underline; text-underline-position: under; }&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Introduction]]></title><description><![CDATA[Bienvenue dans cette introduction à la programmation fonctionnelle ! Avant de commencer, voici quelques pré-requis afin de tout comprendre…]]></description><link>https://known-as-bmf.github.io/functional-programming/intro</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/intro</guid><pubDate>Mon, 21 Oct 2019 18:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Bienvenue dans cette introduction à la programmation fonctionnelle !&lt;/p&gt;
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }
+&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Introduction]]></title><description><![CDATA[Bienvenue dans cette introduction à la programmation fonctionnelle ! Avant de commencer, voici quelques pré-requis afin de tout comprendre…]]></description><link>https://known-as-bmf.github.io/functional-programming/intro</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/intro</guid><pubDate>Mon, 21 Oct 2019 18:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Bienvenue dans cette introduction à la programmation fonctionnelle !&lt;/p&gt;
 &lt;p&gt;Avant de commencer, voici quelques pré-requis afin de tout comprendre.&lt;/p&gt;
 &lt;h2&gt;JavaScript / ES6&lt;/h2&gt;
 &lt;p&gt;Nous allons utiliser JavaScript (et plus particulièrement la version ES6) pour les exemples dans cette introduction. JavaScript est un bon candidat car c’est un langage très dynamique, partiellement fonctionnel qui reste compréhensible par une grande majorité des développeurs familiers avec n’importe quel langage impératif (C#, Java, Python…).&lt;/p&gt;
@@ -1043,7 +1360,8 @@ color: #D4D4D4;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// a -&amp;gt; String -&amp;gt; b&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;prop&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;propName&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;propName&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;];&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;style class=&quot;vscode-highlight-styles&quot;&gt;:root {
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;
+  :root {
   --vscode-highlight-padding-v: 1rem;
   --vscode-highlight-padding-h: 1.5rem;
   --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
@@ -1088,7 +1406,8 @@ color: #D4D4D4;
   background-color: var(--vscode-highlight-line-highlighted-background-color);
   box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
 }
-.default-dark {
+
+  .default-dark {
 background-color: #1E1E1E;
 color: #D4D4D4;
 }
@@ -1112,7 +1431,8 @@ color: #D4D4D4;
 .default-dark .mtk17 { color: #808080; }
 .default-dark .mtki { font-style: italic; }
 .default-dark .mtkb { font-weight: bold; }
-.default-dark .mtku { text-decoration: underline; text-underline-position: under; }&lt;/style&gt;</content:encoded></item><item><title><![CDATA[ES6 — Déclarations]]></title><description><![CDATA[Il existe trois mots clés de déclaration de variable en ES6: const, let et var. Il est aussi possible de déclarer une variable sans mot clé…]]></description><link>https://known-as-bmf.github.io/es6/declarations</link><guid isPermaLink="false">https://known-as-bmf.github.io/es6/declarations</guid><pubDate>Mon, 21 Oct 2019 17:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Il existe trois mots clés de déclaration de variable en ES6: &lt;code&gt;const&lt;/code&gt;, &lt;code&gt;let&lt;/code&gt; et &lt;code&gt;var&lt;/code&gt;. Il est aussi possible de déclarer une variable sans mot clé, ce qui en fera une variable globale.&lt;/p&gt;
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }
+&lt;/style&gt;</content:encoded></item><item><title><![CDATA[ES6 — Déclarations]]></title><description><![CDATA[Il existe trois mots clés de déclaration de variable en ES6: const, let et var. Il est aussi possible de déclarer une variable sans mot clé…]]></description><link>https://known-as-bmf.github.io/es6/declarations</link><guid isPermaLink="false">https://known-as-bmf.github.io/es6/declarations</guid><pubDate>Mon, 21 Oct 2019 17:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Il existe trois mots clés de déclaration de variable en ES6: &lt;code&gt;const&lt;/code&gt;, &lt;code&gt;let&lt;/code&gt; et &lt;code&gt;var&lt;/code&gt;. Il est aussi possible de déclarer une variable sans mot clé, ce qui en fera une variable globale.&lt;/p&gt;
 &lt;h2&gt;Cheat sheet&lt;/h2&gt;
 &lt;table&gt;
 &lt;thead&gt;
