@@ -25,12 +25,12 @@
 <pre class="default-dark vscode-highlight" data-language="js"><code class="vscode-highlight-code"><span class="vscode-highlight-line"><span class="mtk3">// a -&gt; () -&gt; a</span></span>
 <span class="vscode-highlight-line"><span class="mtk4">const</span><span class="mtk1"> </span><span class="mtk11">always</span><span class="mtk1"> = </span><span class="mtk12">x</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> () </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">x</span><span class="mtk1">;</span></span></code></pre>
 <ul>
-<li><code>map</code> applique une fonction de transformation a chaque élément d’une collection.</li>
+<li><code>map</code> applique une fonction de transformation a chaque élément d’une collection. Parfois appelé <code>select</code>.</li>
 </ul>
 <pre class="default-dark vscode-highlight" data-language="js"><code class="vscode-highlight-code"><span class="vscode-highlight-line"><span class="mtk3">// (a -&gt; b) -&gt; a[] -&gt; b[]</span></span>
 <span class="vscode-highlight-line"><span class="mtk4">const</span><span class="mtk1"> </span><span class="mtk11">map</span><span class="mtk1"> = </span><span class="mtk12">mapFn</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">list</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">list</span><span class="mtk1">.</span><span class="mtk11">map</span><span class="mtk1">(</span><span class="mtk12">mapFn</span><span class="mtk1">);</span></span></code></pre>
 <ul>
-<li><code>filter</code> filtre une collection avec un prédicat</li>
+<li><code>filter</code> filtre une collection avec un prédicat. Parfois appelé <code>where</code>.</li>
 </ul>
 <pre class="default-dark vscode-highlight" data-language="js"><code class="vscode-highlight-code"><span class="vscode-highlight-line"><span class="mtk3">// (a -&gt; Boolean) -&gt; a[] -&gt; a[]</span></span>
 <span class="vscode-highlight-line"><span class="mtk4">const</span><span class="mtk1"> </span><span class="mtk11">filter</span><span class="mtk1"> = </span><span class="mtk12">filterFn</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">list</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">list</span><span class="mtk1">.</span><span class="mtk11">filter</span><span class="mtk1">(</span><span class="mtk12">filterFn</span><span class="mtk1">);</span></span></code></pre>
@@ -51,6 +51,7 @@
 <span class="vscode-highlight-line"><span class="mtk4">const</span><span class="mtk1"> </span><span class="mtk11">all</span><span class="mtk1"> = </span><span class="mtk12">allFn</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">list</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">list</span><span class="mtk1">.</span><span class="mtk11">every</span><span class="mtk1">(</span><span class="mtk12">allFn</span><span class="mtk1">);</span></span></code></pre>
 <ul>
 <li><code>flatMap</code></li>
+<li><code>reduce</code></li>
 </ul>
 <style class="vscode-highlight-styles">
   :root {
