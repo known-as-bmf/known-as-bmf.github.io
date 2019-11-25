@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[known-as-bmf.github.io]]></title><description><![CDATA[known-as-bmf.github.io]]></description><link>https://known-as-bmf.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Wed, 20 Nov 2019 00:14:43 GMT</lastBuildDate><item><title><![CDATA[Functional Programming — Composition (Part 2)]]></title><description><![CDATA[Reprenons l’exemple précédent : Il est possible d’utiliser les fonction que nous avons énoncé dans la partie Common functions : De plus, si…]]></description><link>https://known-as-bmf.github.io/functional-programming/composition/part-2</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/composition/part-2</guid><pubDate>Tue, 22 Oct 2019 08:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Reprenons l’exemple précédent :&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[known-as-bmf.github.io]]></title><description><![CDATA[known-as-bmf.github.io]]></description><link>https://known-as-bmf.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 25 Nov 2019 23:25:28 GMT</lastBuildDate><item><title><![CDATA[Functional Programming — Composition (Part 2)]]></title><description><![CDATA[Reprenons l’exemple précédent : Il est possible d’utiliser les fonction que nous avons énoncé dans la partie Common functions : De plus, si…]]></description><link>https://known-as-bmf.github.io/functional-programming/composition/part-2</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/composition/part-2</guid><pubDate>Tue, 22 Oct 2019 08:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Reprenons l’exemple précédent :&lt;/p&gt;
 &lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;transformation&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;compose&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; * &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;),&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk1&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mtk11&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk4&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &amp;lt; &lt;/span&gt;&lt;span class=&quot;mtk7&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
@@ -1421,7 +1421,129 @@ color: #D4D4D4;
 .default-dark .mtki { font-style: italic; }
 .default-dark .mtkb { font-weight: bold; }
 .default-dark .mtku { text-decoration: underline; text-underline-position: under; }
-&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Introduction]]></title><description><![CDATA[Bienvenue dans cette introduction à la programmation fonctionnelle ! Avant de commencer, voici quelques pré-requis afin de tout comprendre…]]></description><link>https://known-as-bmf.github.io/functional-programming/intro</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/intro</guid><pubDate>Mon, 21 Oct 2019 18:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Bienvenue dans cette introduction à la programmation fonctionnelle !&lt;/p&gt;
+&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Introduction (Part 2)]]></title><description><![CDATA[Il y a quelques concepts indispensables à connaitre avant de commencer. Immutabilité Une valeur immuable est une valeur qui change pas de…]]></description><link>https://known-as-bmf.github.io/functional-programming/intro/part-2</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/intro/part-2</guid><pubDate>Mon, 21 Oct 2019 18:10:00 GMT</pubDate><content:encoded>&lt;p&gt;Il y a quelques concepts indispensables à connaitre avant de commencer.&lt;/p&gt;
+&lt;h2&gt;Immutabilité&lt;/h2&gt;
+&lt;p&gt;Une valeur immuable est une valeur qui change pas de valeur après sa définition. Pour faire muter cette valeur, il faut d’abord en faire une copie.&lt;/p&gt;
+&lt;p&gt;L’intérêt est d’éviter les effets de bords lorsqu’une valeur est utilisée dans différent traitements et de garder tous les états d’une valeurs dans le temps pour pouvoir rejouer des traitements ou revenir à un état précédent.&lt;/p&gt;
+&lt;p&gt;Quelques moyens d’adopter ce comportement en JavaScript :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Utiliser &lt;code&gt;const&lt;/code&gt; pour repérer les réassignations grâce à un transpileur / éditeur.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;marche très bien avec les types primitifs mais n’empêche pas le contenu des objets complexes d’être réassigné&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Lors de manipulation d’objets ou de collections&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;faire une &lt;a href=&quot;https://fr.wikipedia.org/wiki/Copie_d%27un_objet#Copie_superficielle&quot;&gt;&lt;strong&gt;copie superficielle&lt;/strong&gt;&lt;/a&gt; (&lt;em&gt;shallow copies&lt;/em&gt;) par &lt;a href=&quot;https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Op%C3%A9rateurs/Syntaxe_d%C3%A9composition&quot;&gt;décomposition&lt;/a&gt; (&lt;em&gt;spreading&lt;/em&gt;)&lt;/li&gt;
+&lt;li&gt;utiliser &lt;a href=&quot;https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/freeze&quot;&gt;&lt;code&gt;Object.freeze&lt;/code&gt;&lt;/a&gt;. Attention, cette technique, comme la décomposition, ne gèle que &lt;strong&gt;superficiellement&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;Faire une copie profonde (&lt;em&gt;deep copy&lt;/em&gt;). très efficace mais peut consommer beaucoup des ressources en fonction de la taille de l’objet.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Ce sont les techniques &lt;em&gt;superficielles&lt;/em&gt; qui sont le plus souvent utilisées, il faut néanmoins être très vigilant avec.&lt;/p&gt;
+&lt;pre class=&quot;default-dark vscode-highlight&quot; data-language=&quot;js&quot;&gt;&lt;code class=&quot;vscode-highlight-code&quot;&gt;&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = { &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;tri:&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk8&quot;&gt;&amp;#39;JAV&amp;#39;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;address:&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; { &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;street:&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk8&quot;&gt;&amp;#39;rue du moulin&amp;#39;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; } };&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk4&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;userCopy&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; = { ...&lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;mtk12&quot;&gt;tri:&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mtk8&quot;&gt;&amp;#39;FOO&amp;#39;&lt;/span&gt;&lt;span class=&quot;mtk1&quot;&gt; };&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// userCopy = { tri: &amp;#39;FOO&amp;#39;, address: { street: &amp;#39;rue du moulin&amp;#39; }}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// ici, les propriétés address de user et userCopy pointent toujours&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;vscode-highlight-line&quot;&gt;&lt;span class=&quot;mtk3&quot;&gt;// vers le même objet en mémoire&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Pureté / Idempotence&lt;/h2&gt;
+&lt;p&gt;Une fonction pure est une fonction qui remplis les critères suivants :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Pour les mêmes valeurs d’entrée, elle retournera toujours le même résultat&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;pas de dépendance a des variables globales ou non locales&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Elle n’a pas d’effets de bords&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;pas d’appels base de donnée&lt;/li&gt;
+&lt;li&gt;pas de mutation de variables globales / non locales&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;La pureté apporte plusieurs bénéfices :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Reproductibilité&lt;/li&gt;
+&lt;li&gt;Très facile a tester unitairement&lt;/li&gt;
+&lt;li&gt;Encourage un découpage en petites unités de traitement&lt;/li&gt;
+&lt;/ul&gt;
+&lt;style class=&quot;vscode-highlight-styles&quot;&gt;
+  :root {
+  --vscode-highlight-padding-v: 1rem;
+  --vscode-highlight-padding-h: 1.5rem;
+  --vscode-highlight-padding-top: var(--vscode-highlight-padding-v);
+  --vscode-highlight-padding-right: var(--vscode-highlight-padding-h);
+  --vscode-highlight-padding-bottom: var(--vscode-highlight-padding-v);
+  --vscode-highlight-padding-left: var(--vscode-highlight-padding-h);
+  --vscode-highlight-border-radius: 8px;
+
+  --vscode-highlight-line-highlighted-background-color: transparent;
+  --vscode-highlight-line-highlighted-border-width: 4px;
+  --vscode-highlight-line-highlighted-border-color: transparent;
+}
+
+.vscode-highlight {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 1rem;
+  padding-top: var(--vscode-highlight-padding-top);
+  padding-bottom: 1rem;
+  padding-bottom: var(--vscode-highlight-padding-bottom);
+  border-radius: 8px;
+  border-radius: var(--vscode-highlight-border-radius);
+  font-feature-settings: normal;
+}
+
+.vscode-highlight-code {
+  display: inline-block;
+  min-width: 100%;
+}
+
+.vscode-highlight-line {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding-left: 1.5rem;
+  padding-left: var(--vscode-highlight-padding-left);
+  padding-right: 1.5rem;
+  padding-right: var(--vscode-highlight-padding-right);
+}
+
+.vscode-highlight-line-highlighted {
+  background-color: var(--vscode-highlight-line-highlighted-background-color);
+  box-shadow: inset var(--vscode-highlight-line-highlighted-border-width) 0 0 0 var(--vscode-highlight-line-highlighted-border-color);
+}
+
+  .default-dark {
+background-color: #1E1E1E;
+color: #D4D4D4;
+}
+
+.default-dark .mtk1 { color: #D4D4D4; }
+.default-dark .mtk2 { color: #1E1E1E; }
+.default-dark .mtk3 { color: #6A9955; }
+.default-dark .mtk4 { color: #569CD6; }
+.default-dark .mtk5 { color: #D16969; }
+.default-dark .mtk6 { color: #D7BA7D; }
+.default-dark .mtk7 { color: #B5CEA8; }
+.default-dark .mtk8 { color: #CE9178; }
+.default-dark .mtk9 { color: #646695; }
+.default-dark .mtk10 { color: #4EC9B0; }
+.default-dark .mtk11 { color: #DCDCAA; }
+.default-dark .mtk12 { color: #9CDCFE; }
+.default-dark .mtk13 { color: #000080; }
+.default-dark .mtk14 { color: #F44747; }
+.default-dark .mtk15 { color: #C586C0; }
+.default-dark .mtk16 { color: #6796E6; }
+.default-dark .mtk17 { color: #808080; }
+.default-dark .mtki { font-style: italic; }
+.default-dark .mtkb { font-weight: bold; }
+.default-dark .mtku { text-decoration: underline; text-underline-position: under; }
+&lt;/style&gt;</content:encoded></item><item><title><![CDATA[Functional Programming — Introduction (Part 1)]]></title><description><![CDATA[Bienvenue dans cette introduction à la programmation fonctionnelle ! Avant de commencer, voici quelques pré-requis afin de tout comprendre…]]></description><link>https://known-as-bmf.github.io/functional-programming/intro/part-1</link><guid isPermaLink="false">https://known-as-bmf.github.io/functional-programming/intro/part-1</guid><pubDate>Mon, 21 Oct 2019 18:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Bienvenue dans cette introduction à la programmation fonctionnelle !&lt;/p&gt;
 &lt;p&gt;Avant de commencer, voici quelques pré-requis afin de tout comprendre.&lt;/p&gt;
 &lt;h2&gt;JavaScript / ES6&lt;/h2&gt;
 &lt;p&gt;Nous allons utiliser JavaScript (et plus particulièrement la version ES6) pour les exemples dans cette introduction. JavaScript est un bon candidat car c’est un langage très dynamique, partiellement fonctionnel qui reste compréhensible par une grande majorité des développeurs familiers avec n’importe quel langage impératif (C#, Java, Python…).&lt;/p&gt;
