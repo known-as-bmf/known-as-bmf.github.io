@@ -37,7 +37,7 @@
 <pre class="default-dark vscode-highlight" data-language="js"><code class="vscode-highlight-code"><span class="vscode-highlight-line"><span class="mtk4">const</span><span class="mtk1"> </span><span class="mtk12">user</span><span class="mtk1"> = { </span><span class="mtk12">tri:</span><span class="mtk1"> </span><span class="mtk8">&#39;JAV&#39;</span><span class="mtk1">, </span><span class="mtk12">address:</span><span class="mtk1"> { </span><span class="mtk12">street:</span><span class="mtk1"> </span><span class="mtk8">&#39;rue du moulin&#39;</span><span class="mtk1"> } };</span></span>
 <span class="vscode-highlight-line"><span class="mtk4">const</span><span class="mtk1"> </span><span class="mtk12">userCopy</span><span class="mtk1"> = { ...</span><span class="mtk12">user</span><span class="mtk1">, </span><span class="mtk12">tri:</span><span class="mtk1"> </span><span class="mtk8">&#39;FOO&#39;</span><span class="mtk1"> };</span></span>
 <span class="vscode-highlight-line"><span class="mtk3">// userCopy = { tri: &#39;FOO&#39;, address: { street: &#39;rue du moulin&#39; }}</span></span>
-<span class="vscode-highlight-line"><span class="mtk3">// ici, les propriétés address de user et userCopy pointent toujours</span></span>
+<span class="vscode-highlight-line"><span class="mtk3">// ici, la propriété &quot;address&quot; de user et userCopy pointe toujours</span></span>
 <span class="vscode-highlight-line"><span class="mtk3">// vers le même objet en mémoire</span></span></code></pre>
 <h2>Pureté / Idempotence</h2>
 <p>Une fonction pure est une fonction qui remplit les critères suivants :</p>

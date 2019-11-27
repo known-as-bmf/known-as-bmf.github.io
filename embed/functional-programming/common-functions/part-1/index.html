@@ -7,37 +7,37 @@ html{overflow-y:auto;}
 .kEFXqd{margin:0;padding-bottom:1.53rem;}</style><link as="script" rel="preload" href="/webpack-runtime-f440a0e409c8b81cea7a.js"/><link as="script" rel="preload" href="/styles-704e478da7bbbbfee482.js"/><link as="script" rel="preload" href="/app-4cb4a4adaa56dc28d308.js"/><link as="script" rel="preload" href="/commons-50701c55f079de1ce0bc.js"/><link as="script" rel="preload" href="/component---src-templates-embed-post-tsx-d9a61255bcaa6b692b9d.js"/><link as="fetch" rel="preload" href="/page-data/embed/functional-programming/common-functions/part-1/page-data.json" crossorigin="anonymous"/></head><body><noscript id="gatsby-noscript">This app works best with JavaScript enabled.</noscript><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group" id="gatsby-focus-wrapper"><div class="tl-edges"><div class="tl-wrapper tl-wrapper--mount tl-wrapper-status--entered" style="z-index:1;opacity:1"><div class="embed-post__Content-sc-11nye0g-0 diwlJS"><h1 class="embed-post__Title-sc-11nye0g-1 kEFXqd">Functional Programming — Common functions (Part 1)</h1><div><p>Une des choses très intimidante quand on débute dans la programmation fonctionnelle, c’est le vocabulaire. Beaucoup de termes sembles étrangers et complexes. Essayons de les démystifier un peu.</p>
 <p>Voici une liste de fonctions classiques et une implémentation naïve. Certaines ont déjà une implémentation en JavaScript standard, mais il est très utile d’en créer une version fonctionnelle pour la suite.</p>
 <ul>
-<li><code>identity</code> une fonction qui prends un argument et le retourne tel quel. parfois appelé <code>id</code>.</li>
+<li><code>identity</code> une fonction qui prends un argument et le retourne tel quel. parfois appelée <code>id</code>.</li>
 </ul>
 <pre class="default-dark vscode-highlight" data-language="js"><code class="vscode-highlight-code"><span class="vscode-highlight-line"><span class="mtk3">// a -&gt; a</span></span>
 <span class="vscode-highlight-line"><span class="mtk4">const</span><span class="mtk1"> </span><span class="mtk11">identity</span><span class="mtk1"> = </span><span class="mtk12">x</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">x</span><span class="mtk1">;</span></span></code></pre>
 <ul>
-<li><code>always</code> une fonction qui prends un argument et retourne une fonction qui retournera toujours cette valeur. Parfois appelé <code>constant</code>.</li>
+<li><code>always</code> une fonction qui prends un argument et retourne une fonction qui retournera toujours cette valeur. Parfois appelée <code>constant</code>.</li>
 </ul>
 <pre class="default-dark vscode-highlight" data-language="js"><code class="vscode-highlight-code"><span class="vscode-highlight-line"><span class="mtk3">// a -&gt; () -&gt; a</span></span>
 <span class="vscode-highlight-line"><span class="mtk4">const</span><span class="mtk1"> </span><span class="mtk11">always</span><span class="mtk1"> = </span><span class="mtk12">x</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> () </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">x</span><span class="mtk1">;</span></span></code></pre>
 <ul>
-<li><code>map</code> applique une fonction de transformation a chaque élément d’une collection. Parfois appelé <code>select</code>.</li>
+<li><code>map</code> applique une fonction de transformation a chaque élément d’une collection. Parfois appelée <code>select</code>.</li>
 </ul>
 <pre class="default-dark vscode-highlight" data-language="js"><code class="vscode-highlight-code"><span class="vscode-highlight-line"><span class="mtk3">// (a -&gt; b) -&gt; a[] -&gt; b[]</span></span>
 <span class="vscode-highlight-line"><span class="mtk4">const</span><span class="mtk1"> </span><span class="mtk11">map</span><span class="mtk1"> = </span><span class="mtk12">mapFn</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">list</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">list</span><span class="mtk1">.</span><span class="mtk11">map</span><span class="mtk1">(</span><span class="mtk12">mapFn</span><span class="mtk1">);</span></span></code></pre>
 <ul>
-<li><code>filter</code> filtre une collection avec un prédicat. Parfois appelé <code>where</code>.</li>
+<li><code>filter</code> filtre une collection avec un prédicat. Parfois appelée <code>where</code>.</li>
 </ul>
 <pre class="default-dark vscode-highlight" data-language="js"><code class="vscode-highlight-code"><span class="vscode-highlight-line"><span class="mtk3">// (a -&gt; Boolean) -&gt; a[] -&gt; a[]</span></span>
 <span class="vscode-highlight-line"><span class="mtk4">const</span><span class="mtk1"> </span><span class="mtk11">filter</span><span class="mtk1"> = </span><span class="mtk12">filterFn</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">list</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">list</span><span class="mtk1">.</span><span class="mtk11">filter</span><span class="mtk1">(</span><span class="mtk12">filterFn</span><span class="mtk1">);</span></span></code></pre>
 <ul>
-<li><code>find</code> trouve la première valeur dans collection qui satisfait un prédicat. Parfois appelé <code>first</code>.</li>
+<li><code>find</code> trouve la première valeur dans collection qui satisfait un prédicat. Parfois appelée <code>first</code>.</li>
 </ul>
 <pre class="default-dark vscode-highlight" data-language="js"><code class="vscode-highlight-code"><span class="vscode-highlight-line"><span class="mtk3">// (a -&gt; Boolean) -&gt; a[] -&gt; a</span></span>
 <span class="vscode-highlight-line"><span class="mtk4">const</span><span class="mtk1"> </span><span class="mtk11">find</span><span class="mtk1"> = </span><span class="mtk12">findFn</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">list</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">list</span><span class="mtk1">.</span><span class="mtk11">find</span><span class="mtk1">(</span><span class="mtk12">findFn</span><span class="mtk1">);</span></span></code></pre>
 <ul>
-<li><code>any</code> vérifie si au moins un des élément d’une collection satisfais un prédicat. Parfois appelé <code>some</code>.</li>
+<li><code>any</code> vérifie si au moins un des élément d’une collection satisfais un prédicat. Parfois appelée <code>some</code>.</li>
 </ul>
 <pre class="default-dark vscode-highlight" data-language="js"><code class="vscode-highlight-code"><span class="vscode-highlight-line"><span class="mtk3">// (a -&gt; Boolean) -&gt; a[] -&gt; Boolean</span></span>
 <span class="vscode-highlight-line"><span class="mtk4">const</span><span class="mtk1"> </span><span class="mtk11">any</span><span class="mtk1"> = </span><span class="mtk12">anyFn</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">list</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">list</span><span class="mtk1">.</span><span class="mtk11">some</span><span class="mtk1">(</span><span class="mtk12">anyFn</span><span class="mtk1">);</span></span></code></pre>
 <ul>
-<li><code>all</code> vérifie si tous les éléments d’une collection satisfont un prédicat. Parfois appelé <code>every</code>.</li>
+<li><code>all</code> vérifie si tous les éléments d’une collection satisfont un prédicat. Parfois appelée <code>every</code>.</li>
 </ul>
 <pre class="default-dark vscode-highlight" data-language="js"><code class="vscode-highlight-code"><span class="vscode-highlight-line"><span class="mtk3">// (a -&gt; Boolean) -&gt; a[] -&gt; Boolean</span></span>
 <span class="vscode-highlight-line"><span class="mtk4">const</span><span class="mtk1"> </span><span class="mtk11">all</span><span class="mtk1"> = </span><span class="mtk12">allFn</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">list</span><span class="mtk1"> </span><span class="mtk4">=&gt;</span><span class="mtk1"> </span><span class="mtk12">list</span><span class="mtk1">.</span><span class="mtk11">every</span><span class="mtk1">(</span><span class="mtk12">allFn</span><span class="mtk1">);</span></span></code></pre>
